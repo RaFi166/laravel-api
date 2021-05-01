@@ -1,51 +1,58 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-
 class AuthController extends Controller
 {
-
     public function index()
     {
-
-        return User::all();
+        $users = User::all();
+        return response()->json([
+            'message'=>'data stored successfully',
+            'data'=> $users
+        ]);
     }
 
-    public function create()
+    public function single_user($id)
     {
-        //
+        // return User::find($id);
+        $single_user = User::find($id);
+        return response()->json([
+            'message' => 'single user got succesfully',
+            'single_user' => $single_user
+
+        ]);
     }
 
-    public function store(Request $request)
+    public function delete_user($id)
     {
-        //
+        return User::find($id)->delete();
     }
 
+    public function users_input(Request $request){
+        // return $request->all();
+        // $validate = Validator::make($request->all(),[
+        //     "name" => "required",
+        //     "email" => "required",
+        //     "password" => "required",
+        // ]);
+       $validate= $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required',
+        ]);
+        dd("okay");
 
-    public function show($id)
-    {
-        //
+        // if ($validate->fails()){
+        //     return response()->json([
+
+        //        "errors" => $validate->errors()
+        //         ],401);
+        // }
+            
     }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    public function destroy($id)
-    {
-        //
-    }
+    //end
 }
